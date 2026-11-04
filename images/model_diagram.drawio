@@ -1,0 +1,33 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="PWQZd41sXk0MBbYh7vSr">
+    <mxGraphModel dx="1486" dy="904" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="0FZNV0cakMRC8oeS6NRV-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;" value="" vertex="1">
+          <mxGeometry height="100" width="560" as="geometry" />
+        </mxCell>
+        <mxCell id="0FZNV0cakMRC8oeS6NRV-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fontSize=16;fillColor=#D4E1F5;" value="Nurse consultation" vertex="1">
+          <mxGeometry height="60" width="120" x="220" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="0FZNV0cakMRC8oeS6NRV-3" edge="1" parent="1" style="edgeStyle=none;curved=1;rounded=0;curveGeometry=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;defaultLabelBackgroundColor=page;startSize=8;endSize=8;" target="0FZNV0cakMRC8oeS6NRV-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="50" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0FZNV0cakMRC8oeS6NRV-4" edge="1" parent="1" style="edgeStyle=none;curved=1;rounded=0;curveGeometry=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=12;defaultLabelBackgroundColor=page;startSize=8;endSize=8;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="49.5" as="sourcePoint" />
+            <mxPoint x="450" y="49.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0FZNV0cakMRC8oeS6NRV-5" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="Patient departures" vertex="1">
+          <mxGeometry height="45" width="90" x="450" y="27.5" as="geometry" />
+        </mxCell>
+        <mxCell id="0FZNV0cakMRC8oeS6NRV-6" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=16;" value="Patient arrivals" vertex="1">
+          <mxGeometry height="45" width="90" x="20" y="27.5" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
