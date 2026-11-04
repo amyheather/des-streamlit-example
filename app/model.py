@@ -1,6 +1,4 @@
-"""
-This is the one-step model from the second simpy session (2B)
-"""
+"""This is the one-step model from the second SimPy session (2B)."""
 
 import simpy
 from sim_tools.distributions import Exponential, Lognormal
@@ -78,20 +76,3 @@ class Model:
         self.mean_q_time_nurse = entity_dataframe["q_time_nurse"].mean()
         self.sd_q_time_nurse = entity_dataframe["q_time_nurse"].std()
         self.perc_90_q_time_nurse = entity_dataframe["q_time_nurse"].quantile(0.9)
-
-
-my_params = Param()
-my_model = Model(my_params)
-my_model.run_model()
-
-patient_df = my_model.convert_entity_list_to_dataframe(my_model.list_of_patients)
-my_model.calculate_run_results(patient_df)
-
-print(
-    f"Mean queuing time for the nurse was {my_model.mean_q_time_nurse:.2f}", "minutes"
-)
-print(f"SD queuing time for the nurse was {my_model.sd_q_time_nurse:.2f}", "minutes")
-print(
-    "90th percentile queuing time for the nurse was",
-    f"{my_model.perc_90_q_time_nurse:.2f} minutes",
-)
