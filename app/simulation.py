@@ -1,3 +1,4 @@
+import plotly.express as px
 import streamlit as st
 from model import Param, Trial
 
@@ -34,12 +35,7 @@ with st.container(border=True):
         key="sd_nurse_consult_time",
     )
 
-    st.pills(
-        label="Number of nurses",
-        options=range(1, 5),
-        default=1,
-        key="num_nurses"
-    )
+    st.pills(label="Number of nurses", options=range(1, 5), default=1, key="num_nurses")
     st.space(size="xxsmall")
 
     st.subheader("Simulation")
@@ -54,9 +50,9 @@ with st.container(border=True):
 
     st.slider(
         label="Number of replications",
-        min_value=1,
-        max_value=10,
-        value=5,
+        min_value=10,
+        max_value=50,
+        value=30,
         key="num_replications",
     )
 
@@ -73,7 +69,6 @@ if st.button("Run simulation", type="primary"):
         sim_duration=st.session_state.sim_duration,
         num_replications=st.session_state.num_replications,
     )
-
     trial = Trial(param=params)
     trial.run_trial()
     trial.calculate_trial_results()
@@ -84,17 +79,25 @@ if st.button("Run simulation", type="primary"):
 
     st.header("Results")
 
+    st.subheader("Mean queue time for nurse")
     st.write(f"""
-    Queueing time for the nurse.
-
     * Mean: {trial.trial_mean_q_time_nurse:.2f} minutes.
     * SD: {trial.trial_sd_q_time_nurse:.2f} minutes.
     * 90th Perc: {trial.trial_perc_90_q_time_nurse:.2f} minutes.
     * Standard error: {trial.se_q_time_nurse:.2f}
     * 95% CI: ({trial.ci_lower_q_time_nurse:.2f},
-      {trial.ci_upper_q_time_nurse:.2f}) minutes
-
+        {trial.ci_upper_q_time_nurse:.2f}) minutes
     """)
+
+    st.subheader("Results from each replication")
+
+    fig = px.histogram(
+        trial.replication_df,
+        x="mean_q_time_nurse",
+        labels={"mean_q_time_nurse": "Mean nurse queue time"},
+    )
+    fig.update_layout(yaxis_title="Number of replications")
+    st.plotly_chart(fig)
 
     with st.expander("View underlying data from each replication"):
         st.dataframe(
