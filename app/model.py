@@ -29,6 +29,7 @@ class Param:
         num_nurses=1,
         sim_duration=120,
         num_replications=5,
+        nurse_cost_per_hour=30,  # NEW
     ):
         self.mean_patient_inter = mean_patient_inter
         self.mean_nurse_consult_time = mean_nurse_consult_time
@@ -36,6 +37,7 @@ class Param:
         self.num_nurses = num_nurses
         self.sim_duration = sim_duration
         self.num_replications = num_replications
+        self.nurse_cost_per_hour = nurse_cost_per_hour  # NEW
 
 
 class Model:
@@ -142,4 +144,12 @@ class Trial:
 
         self.ci_upper_q_time_nurse = self.trial_mean_q_time_nurse + (
             t * self.se_q_time_nurse
+        )
+
+        # NEW
+        self.total_nurse_cost = (
+            self.param.num_nurses
+            * self.param.sim_duration
+            / 60
+            * self.param.nurse_cost_per_hour
         )

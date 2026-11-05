@@ -46,8 +46,17 @@ with st.container(border=True):
     )
 
     st.pills(label="Number of nurses", options=range(1, 5), default=1, key="num_nurses")
-    st.space(size="xxsmall")
 
+    st.number_input(
+        label="Cost per nurse per hour (£)",
+        min_value=0.0,
+        value=30.0,
+        step=1.0,
+        key="nurse_cost_per_hour",
+        help="Nurses are costed for the full simulation duration, including time when they are not seeing patients",
+    )
+
+    st.space(size="xxsmall")
     st.subheader("Simulation")
 
     st.slider(
@@ -78,6 +87,7 @@ if st.button("Run and save scenario", type="primary"):
         num_nurses=st.session_state.num_nurses,
         sim_duration=st.session_state.sim_duration,
         num_replications=st.session_state.num_replications,
+        nurse_cost_per_hour=st.session_state.nurse_cost_per_hour,
     )
     trial = Trial(param=params)
     trial.run_trial()
@@ -95,6 +105,7 @@ if st.button("Run and save scenario", type="primary"):
             "Consultation mean": st.session_state.mean_nurse_consult_time,
             "Consultation SD": st.session_state.sd_nurse_consult_time,
             "Nurses": st.session_state.num_nurses,
+            "Cost per hour": st.session_state.nurse_cost_per_hour,
             "Duration": st.session_state.sim_duration,
             "Replications": st.session_state.num_replications,
         },
@@ -104,6 +115,7 @@ if st.button("Run and save scenario", type="primary"):
         "se": trial.se_q_time_nurse,
         "ci_lower": trial.ci_lower_q_time_nurse,
         "ci_upper": trial.ci_upper_q_time_nurse,
+        "cost": trial.total_nurse_cost,
         "df": trial.replication_df,
     }
 

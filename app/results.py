@@ -82,6 +82,8 @@ else:
         * 90th Perc: {results["p90"]:.2f} minutes.
         * Standard error: {results["se"]:.2f}
         * 95% CI: ({results["ci_lower"]:.2f}, {results["ci_upper"]:.2f}) minutes
+        
+        Total nurse staffing cost: £{results["cost"]:,.2f}
         """)
 
         st.space()
@@ -170,7 +172,7 @@ else:
                 st.plotly_chart(fig)
 
                 st.space()
-                st.subheader("Summary statistics for nurse queue time")
+                st.subheader("Summary statistics")
 
                 summary = pd.DataFrame(
                     [
@@ -191,9 +193,21 @@ else:
                     ]
                 )
 
-                st.caption("Nurse queue time summary statistics, in minutes.")
+                st.caption("Nurse queue time summary statistics, in minutes:")
 
                 st.dataframe(
                     summary.style.format(precision=2),
                     hide_index=True,
                 )
+
+                st.caption("Total nurse staffing costs:")
+                costs = pd.DataFrame(
+                    [
+                        {
+                            "Scenario": name,
+                            "Total cost (£)": st.session_state.scenarios[name]["cost"],
+                        }
+                        for name in chosen_compare
+                    ]
+                )
+                st.dataframe(costs, hide_index=True)
