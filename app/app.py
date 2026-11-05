@@ -17,8 +17,7 @@ st.logo(
 pg = st.navigation(
     [
         st.Page("home.py", title="Home"),
-        st.Page("simulation.py", title="Simulation"),
-        st.Page("about.py", title="About"),
+        st.Page("simulation.py", title="Run simulation"),
     ]
 )
 pg.run()
