@@ -1,0 +1,158 @@
+---
+title: "Module 2 'I want to fix my delays, and see what works before I try it'"
+subtitle: "Session 2G: Creating a DES interface with Streamlit - Part 1"
+author:
+  - name: "Sammi Rosser - Presenter"
+  - name: "Amy Heather - Session content creator"
+format:
+  revealjs:
+    theme: dark
+    css: styles.css
+    logo: images/hsma_logo.png
+    center: false
+    auto-stretch: false
+    width: 1280
+    height: 720
+---
+
+## You've built a DES model!
+
+![](gif/beautiful.gif){height=400px}
+
+Now it's time to share results of the model.
+
+## Let's share the model
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](gif/go-wrong.gif)
+
+:::
+
+::: {.column width="50%"}
+
+
+You could send everyone your Python code.<br/>
+But they might not...
+
+* Know Python.
+* Have it installed.
+* Have the right environment or packages.
+* Know which bits to run or which numbers to change.
+* Have time to figure all that out.
+
+:::
+
+::::
+
+## Actually, let's send a report
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Run a few scenarios.
+
+Make some lovely charts.
+
+Send everyone a report.
+
+Job done. Surely.
+
+:::
+
+::: {.column width="50%"}
+
+![](gif/mission-accomplished.gif)
+
+:::
+
+::::
+
+## You get a few questions back...
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+"Can you rerun it with another three beds?"
+
+"What if we have fewer staff on Tuesdays?"
+
+"Can we change the arrival rate?"
+
+"Can you try all three of those things together?"
+
+<br>
+
+Somewhere, a file called `final_report_v7_ACTUAL_FINAL.pdf` is being created.
+
+<br>
+
+But what if they could try it themselves?
+
+:::
+
+::: {.column width="50%"}
+
+![](gif/busy.gif)
+
+:::
+
+::::
+
+##
+
+![](gif/you-get-a-website.gif){height=500px}
+
+## Enter Streamlit
+
+Streamlit lets us build a data-focused web application in Python.
+
+We can give our DES model an interface so people can:
+
+* Choose model inputs
+* Run scenarios
+* Explore charts and results
+
+![](images/streamlit_logo.png)
+
+## DES app showcase: acute medical unit
+
+<https://amumodelling-hsma.streamlit.app/>
+
+![](images/example_amu.png){height=500px}
+
+## DES app showcase: acute medical unit
+
+<https://amumodelling-hsma.streamlit.app/>
+
+![](images/example_amu_charts.png){height=500px}
+
+## DES app showcase: elective surgery{visibility="hidden"}
+
+TODO: Not currently working
+
+<https://gstt-hands-waitlist.streamlit.app/>
+
+## DES app showcase: stroke ward
+
+<https://stroke-model-des.streamlit.app/>
+
+## DES app showcase: non-elective flow
+
+<https://non-elective-flow-simulation-model-club.streamlit.app/>
+
+## DES app showcase: urgent treatment centre
+
+<https://stars-simpy-example.streamlit.app/>
+
+## DES app showcase: DES playground
+
+<https://playground.hsma.co.uk/>
+
+## DES app showcase: vidigi examples
+
+<https://simpy-visualisation.streamlit.app/>
