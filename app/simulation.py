@@ -34,9 +34,13 @@ with st.container(border=True):
         key="sd_nurse_consult_time",
     )
 
-    st.slider(
-        label="Number of nurses", min_value=1, max_value=4, value=1, key="num_nurses"
+    st.pills(
+        label="Number of nurses",
+        options=range(1, 5),
+        default=1,
+        key="num_nurses"
     )
+    st.space(size="xxsmall")
 
     st.subheader("Simulation")
 
@@ -79,6 +83,7 @@ if st.button("Run simulation", type="primary"):
     # ----------------------------------------------------------------------------
 
     st.header("Results")
+
     st.write(f"""
     Queueing time for the nurse.
 
@@ -90,3 +95,16 @@ if st.button("Run simulation", type="primary"):
       {trial.ci_upper_q_time_nurse:.2f}) minutes
 
     """)
+
+    with st.expander("View underlying data from each replication"):
+        st.dataframe(
+            trial.replication_df[
+                [
+                    "replication_id",
+                    "patient_counter",
+                    "mean_q_time_nurse",
+                    "sd_q_time_nurse",
+                    "perc_90_q_time_nurse",
+                ]
+            ]
+        )
