@@ -3,7 +3,7 @@
 Example app:
 
 ```
-mamba env create --file environment.yml
+mamba env create --file environments/app.yml
 mamba activate des
 streamlit run app/app.py
 ```
