@@ -18,6 +18,7 @@ pg = st.navigation(
     [
         st.Page("home.py", title="Home"),
         st.Page("simulation.py", title="Run simulation"),
+        st.Page("results.py", title="View results"),
     ]
 )
 pg.run()

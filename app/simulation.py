@@ -1,4 +1,5 @@
-import plotly.express as px
+"""Run and save simulation scenarios."""
+
 import streamlit as st
 from model import Param, Trial
 
@@ -13,11 +14,7 @@ if "scenarios" not in st.session_state:
 # Allow user to choose model parameters
 # ----------------------------------------------------------------------------
 
-st.header("1. Run and save a scenario")
-st.write("""
-Choose the model settings, then run the simulation. Results will be saved
-as a new scenario for this session.
-""")
+st.title("Run simulation")
 
 with st.container(border=True):
     st.subheader("Patients")
@@ -92,6 +89,15 @@ if st.button("Run and save scenario", type="primary"):
 
     scenario_name = f"Scenario {len(st.session_state.scenarios) + 1}"
     st.session_state.scenarios[scenario_name] = {
+        "settings": {
+            "Scenario": scenario_name,
+            "Inter-arrival": st.session_state.mean_patient_inter,
+            "Consultation mean": st.session_state.mean_nurse_consult_time,
+            "Consultation SD": st.session_state.sd_nurse_consult_time,
+            "Nurses": st.session_state.num_nurses,
+            "Duration": st.session_state.sim_duration,
+            "Replications": st.session_state.num_replications,
+        },
         "mean": trial.trial_mean_q_time_nurse,
         "sd": trial.trial_sd_q_time_nurse,
         "p90": trial.trial_perc_90_q_time_nurse,
@@ -104,52 +110,20 @@ if st.button("Run and save scenario", type="primary"):
     # Select the newly saved scenario and show confirmation
     st.session_state.chosen_scenario = scenario_name
     st.success(f"""
-    {scenario_name} ran successfully and was saved for this sesssion. Its
-    results are shown below.
+    {scenario_name} ran successfully and was saved for this sesssion.
     """)
-
-# ----------------------------------------------------------------------------
-# Show results
-# ----------------------------------------------------------------------------
 
 if st.session_state.scenarios:
     st.divider()
-    st.header("2. View saved results")
+    st.header("Saved scenarios")
 
-    st.selectbox(
-        label="Scenario to view:",
-        options=list(st.session_state.scenarios),
-        key="chosen_scenario",
+    st.dataframe(
+        [scenario["settings"] for scenario in st.session_state.scenarios.values()],
+        hide_index=True,
     )
+    st.caption("Scenarios are saved for the current session only.")
 
-    results = st.session_state.scenarios[st.session_state.chosen_scenario]
-
-    st.subheader(f"Results: {st.session_state.chosen_scenario}")
-    st.write(f"""
-    * Mean: {results["mean"]:.2f} minutes.
-    * SD: {results["sd"]:.2f} minutes.
-    * 90th Perc: {results["p90"]:.2f} minutes.
-    * Standard error: {results["se"]:.2f}
-    * 95% CI: ({results["ci_lower"]:.2f}, {results["ci_upper"]:.2f}) minutes
-    """)
-
-    fig = px.histogram(
-        data_frame=results["df"],
-        x="mean_q_time_nurse",
-        labels={"mean_q_time_nurse": "Mean nurse queue time"},
-    )
-    fig.update_layout(yaxis_title="Number of replications")
-    st.plotly_chart(fig)
-
-    with st.expander("View underlying data from each replication"):
-        st.dataframe(
-            results["df"][
-                [
-                    "replication_id",
-                    "patient_counter",
-                    "mean_q_time_nurse",
-                    "sd_q_time_nurse",
-                    "perc_90_q_time_nurse",
-                ]
-            ]
-        )
+    st.divider()
+    st.header("Results")
+    if st.button(label="Go to results page", type="primary"):
+        st.switch_page("results.py")
