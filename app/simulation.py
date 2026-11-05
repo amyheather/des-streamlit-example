@@ -1,12 +1,11 @@
-from model import Param, Model
 import streamlit as st
+from model import Model, Param
 
 # ----------------------------------------------------------------------------
 # Allow user to choose model parameters
 # ----------------------------------------------------------------------------
 
 with st.container(border=True):
-
     st.subheader("Patients")
 
     st.slider(
@@ -15,7 +14,7 @@ with st.container(border=True):
         max_value=7.0,
         value=5.0,
         step=0.25,
-        key="mean_patient_inter"
+        key="mean_patient_inter",
     )
 
     st.subheader("Nurses")
@@ -25,22 +24,18 @@ with st.container(border=True):
         min_value=3.0,
         max_value=9.0,
         value=6.0,
-        key="mean_nurse_consult_time"
+        key="mean_nurse_consult_time",
     )
 
     st.number_input(
         label="Standard deviation of nurse consultation length (minutes)",
         min_value=0.0,
         value=1.0,
-        key="sd_nurse_consult_time"
+        key="sd_nurse_consult_time",
     )
 
     st.slider(
-        label="Number of nurses",
-        min_value=1,
-        max_value=4,
-        value=1,
-        key="num_nurses"
+        label="Number of nurses", min_value=1, max_value=4, value=1, key="num_nurses"
     )
 
     st.subheader("Simulation")
@@ -62,7 +57,6 @@ with st.container(border=True):
     )
 
 if st.button("Run simulation", type="primary"):
-
     # ----------------------------------------------------------------------------
     # Run the model
     # ----------------------------------------------------------------------------

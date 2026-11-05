@@ -9,14 +9,16 @@ st.set_page_config(
 )
 
 # Add logo to sidebar
-st.logo(image="images/nihr_logo.png",)
+st.logo(
+    image="images/nihr_logo.png",
+)
 
 # Define pages and their order
 pg = st.navigation(
     [
         st.Page("home.py", title="Home"),
         st.Page("simulation.py", title="Simulation"),
-        st.Page("about.py", title="About")
+        st.Page("about.py", title="About"),
     ]
 )
 pg.run()
