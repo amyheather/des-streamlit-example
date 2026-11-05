@@ -1,5 +1,5 @@
 import streamlit as st
-from model import Model, Param
+from model import Param, Trial
 
 # ----------------------------------------------------------------------------
 # Allow user to choose model parameters
@@ -61,7 +61,7 @@ if st.button("Run simulation", type="primary"):
     # Run the model
     # ----------------------------------------------------------------------------
 
-    my_params = Param(
+    params = Param(
         mean_patient_inter=st.session_state.mean_patient_inter,
         mean_nurse_consult_time=st.session_state.mean_nurse_consult_time,
         sd_nurse_consult_time=st.session_state.sd_nurse_consult_time,
@@ -70,11 +70,9 @@ if st.button("Run simulation", type="primary"):
         num_replications=st.session_state.num_replications,
     )
 
-    my_model = Model(param=my_params, replication_id=0)
-    my_model.run_model()
-
-    patient_df = my_model.convert_entity_list_to_dataframe(my_model.list_of_patients)
-    run_results = my_model.calculate_run_results(patient_df)
+    trial = Trial(param=params)
+    trial.run_trial()
+    trial.calculate_trial_results()
 
     # ----------------------------------------------------------------------------
     # Show results
@@ -82,9 +80,13 @@ if st.button("Run simulation", type="primary"):
 
     st.header("Results")
     st.write(f"""
-    Mean queuing time for the nurse was {my_model.mean_q_time_nurse:.2f} minutes.
+    Queueing time for the nurse.
 
-    SD queuing time for the nurse was {my_model.sd_q_time_nurse:.2f} minutes.
+    * Mean: {trial.trial_mean_q_time_nurse:.2f} minutes.
+    * SD: {trial.trial_sd_q_time_nurse:.2f} minutes.
+    * 90th Perc: {trial.trial_perc_90_q_time_nurse:.2f} minutes.
+    * Standard error: {trial.se_q_time_nurse:.2f}
+    * 95% CI: ({trial.ci_lower_q_time_nurse:.2f},
+      {trial.ci_upper_q_time_nurse:.2f}) minutes
 
-    90th percentile queuing time for the nurse was {my_model.perc_90_q_time_nurse:.2f} minutes.
     """)
