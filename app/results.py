@@ -116,76 +116,84 @@ else:
     # ------------------------------------------------------------------------
 
     with tab_compare:
-        st.space()
-        with st.container(border=True):
-            chosen_compare = st.multiselect(
-                label="**Choose scenarios to compare**",
-                options=list(st.session_state.scenarios),
-            )
-
-            st.caption("The selected scenarios are highlighted below.")
-
-            st.dataframe(
-                style_settings(settings=settings, chosen_scenarios=chosen_compare),
-                hide_index=True,
-            )
-
-        if len(chosen_compare) < 2:
-            st.info("Choose at least two scenario to compare", icon="ℹ️")
+        if len(st.session_state.scenarios) < 2:
+            st.info("Run at least two scenarios to enable comparison", icon="ℹ️")
 
         else:
             st.space()
-            st.subheader("Mean nurse queue time")
-            st.write(
-                "Compare the mean nurse queue times across replications. "
-                "Each point represents one replication."
-            )
+            with st.container(border=True):
+                chosen_compare = st.multiselect(
+                    label="**Choose scenarios to compare**",
+                    options=list(st.session_state.scenarios),
+                )
 
-            # Combine replication results, adding a scenario label.
-            replications = pd.concat(
-                [
-                    st.session_state.scenarios[name]["df"].assign(Scenario=name)
-                    for name in chosen_compare
-                ],
-                ignore_index=True,
-            )
+                st.caption("The selected scenarios are highlighted below.")
 
-            fig = px.box(
-                replications,
-                x="Scenario",
-                y="mean_q_time_nurse",
-                color="Scenario",
-                points="all",
-                category_orders={"Scenario": list(st.session_state.scenarios)},
-                hover_data=["replication_id"],
-                labels={
-                    "mean_q_time_nurse": "Mean nurse queue time (minutes)",
-                },
-            )
-            fig.update_layout(showlegend=False)
-            st.plotly_chart(fig)
+                st.dataframe(
+                    style_settings(settings=settings, chosen_scenarios=chosen_compare),
+                    hide_index=True,
+                )
 
-            st.space()
-            st.subheader("Summary statistics for nurse queue time")
+            if len(chosen_compare) < 2:
+                st.info("Choose at least two scenario to compare", icon="ℹ️")
 
-            summary = pd.DataFrame(
-                [
-                    {
-                        "Scenario": name,
-                        "Mean": st.session_state.scenarios[name]["mean"],
-                        "SD": st.session_state.scenarios[name]["sd"],
-                        "90th percentile": st.session_state.scenarios[name]["p90"],
-                        "Standard error": st.session_state.scenarios[name]["se"],
-                        "95% CI lower": st.session_state.scenarios[name]["ci_lower"],
-                        "95% CI upper": st.session_state.scenarios[name]["ci_upper"],
-                    }
-                    for name in chosen_compare
-                ]
-            )
+            else:
+                st.space()
+                st.subheader("Mean nurse queue time")
+                st.write(
+                    "Compare the mean nurse queue times across replications. "
+                    "Each point represents one replication."
+                )
 
-            st.caption("Nurse queue time summary statistics, in minutes.")
+                # Combine replication results, adding a scenario label.
+                replications = pd.concat(
+                    [
+                        st.session_state.scenarios[name]["df"].assign(Scenario=name)
+                        for name in chosen_compare
+                    ],
+                    ignore_index=True,
+                )
 
-            st.dataframe(
-                summary.style.format(precision=2),
-                hide_index=True,
-            )
+                fig = px.box(
+                    replications,
+                    x="Scenario",
+                    y="mean_q_time_nurse",
+                    color="Scenario",
+                    points="all",
+                    category_orders={"Scenario": list(st.session_state.scenarios)},
+                    hover_data=["replication_id"],
+                    labels={
+                        "mean_q_time_nurse": "Mean nurse queue time (minutes)",
+                    },
+                )
+                fig.update_layout(showlegend=False)
+                st.plotly_chart(fig)
+
+                st.space()
+                st.subheader("Summary statistics for nurse queue time")
+
+                summary = pd.DataFrame(
+                    [
+                        {
+                            "Scenario": name,
+                            "Mean": st.session_state.scenarios[name]["mean"],
+                            "SD": st.session_state.scenarios[name]["sd"],
+                            "90th percentile": st.session_state.scenarios[name]["p90"],
+                            "Standard error": st.session_state.scenarios[name]["se"],
+                            "95% CI lower": st.session_state.scenarios[name][
+                                "ci_lower"
+                            ],
+                            "95% CI upper": st.session_state.scenarios[name][
+                                "ci_upper"
+                            ],
+                        }
+                        for name in chosen_compare
+                    ]
+                )
+
+                st.caption("Nurse queue time summary statistics, in minutes.")
+
+                st.dataframe(
+                    summary.style.format(precision=2),
+                    hide_index=True,
+                )
