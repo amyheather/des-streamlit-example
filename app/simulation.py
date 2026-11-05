@@ -76,7 +76,7 @@ if st.button("Run simulation", type="primary"):
         num_replications=st.session_state.num_replications,
     )
 
-    my_model = Model(my_params)
+    my_model = Model(param=my_params, replication_id=0)
     my_model.run_model()
 
     patient_df = my_model.convert_entity_list_to_dataframe(my_model.list_of_patients)
