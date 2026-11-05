@@ -3,8 +3,21 @@ import streamlit as st
 from model import Param, Trial
 
 # ----------------------------------------------------------------------------
+# Session state set-up
+# ----------------------------------------------------------------------------
+
+if "scenarios" not in st.session_state:
+    st.session_state.scenarios = {}
+
+# ----------------------------------------------------------------------------
 # Allow user to choose model parameters
 # ----------------------------------------------------------------------------
+
+st.header("1. Run and save a scenario")
+st.write("""
+Choose the model settings, then run the simulation. Results will be saved
+as a new scenario for this session.
+""")
 
 with st.container(border=True):
     st.subheader("Patients")
@@ -56,7 +69,7 @@ with st.container(border=True):
         key="num_replications",
     )
 
-if st.button("Run simulation", type="primary"):
+if st.button("Run and save scenario", type="primary"):
     # ----------------------------------------------------------------------------
     # Run the model
     # ----------------------------------------------------------------------------
@@ -74,25 +87,54 @@ if st.button("Run simulation", type="primary"):
     trial.calculate_trial_results()
 
     # ----------------------------------------------------------------------------
-    # Show results
+    # Save results to session state to allow comparison between scenarios
     # ----------------------------------------------------------------------------
 
-    st.header("Results")
+    scenario_name = f"Scenario {len(st.session_state.scenarios) + 1}"
+    st.session_state.scenarios[scenario_name] = {
+        "mean": trial.trial_mean_q_time_nurse,
+        "sd": trial.trial_sd_q_time_nurse,
+        "p90": trial.trial_perc_90_q_time_nurse,
+        "se": trial.se_q_time_nurse,
+        "ci_lower": trial.ci_lower_q_time_nurse,
+        "ci_upper": trial.ci_upper_q_time_nurse,
+        "df": trial.replication_df,
+    }
 
-    st.subheader("Mean queue time for nurse")
-    st.write(f"""
-    * Mean: {trial.trial_mean_q_time_nurse:.2f} minutes.
-    * SD: {trial.trial_sd_q_time_nurse:.2f} minutes.
-    * 90th Perc: {trial.trial_perc_90_q_time_nurse:.2f} minutes.
-    * Standard error: {trial.se_q_time_nurse:.2f}
-    * 95% CI: ({trial.ci_lower_q_time_nurse:.2f},
-        {trial.ci_upper_q_time_nurse:.2f}) minutes
+    # Select the newly saved scenario and show confirmation
+    st.session_state.chosen_scenario = scenario_name
+    st.success(f"""
+    {scenario_name} ran successfully and was saved for this sesssion. Its
+    results are shown below.
     """)
 
-    st.subheader("Results from each replication")
+# ----------------------------------------------------------------------------
+# Show results
+# ----------------------------------------------------------------------------
+
+if st.session_state.scenarios:
+    st.divider()
+    st.header("2. View saved results")
+
+    st.selectbox(
+        label="Scenario to view:",
+        options=list(st.session_state.scenarios),
+        key="chosen_scenario",
+    )
+
+    results = st.session_state.scenarios[st.session_state.chosen_scenario]
+
+    st.subheader(f"Results: {st.session_state.chosen_scenario}")
+    st.write(f"""
+    * Mean: {results["mean"]:.2f} minutes.
+    * SD: {results["sd"]:.2f} minutes.
+    * 90th Perc: {results["p90"]:.2f} minutes.
+    * Standard error: {results["se"]:.2f}
+    * 95% CI: ({results["ci_lower"]:.2f}, {results["ci_upper"]:.2f}) minutes
+    """)
 
     fig = px.histogram(
-        trial.replication_df,
+        data_frame=results["df"],
         x="mean_q_time_nurse",
         labels={"mean_q_time_nurse": "Mean nurse queue time"},
     )
@@ -101,7 +143,7 @@ if st.button("Run simulation", type="primary"):
 
     with st.expander("View underlying data from each replication"):
         st.dataframe(
-            trial.replication_df[
+            results["df"][
                 [
                     "replication_id",
                     "patient_counter",
