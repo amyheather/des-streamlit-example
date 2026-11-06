@@ -1,0 +1,842 @@
+---
+title: "Module 2 'I want to fix my delays, and see what works before I try it'"
+subtitle: "Session 2G: Creating a DES interface with Streamlit - Part 1"
+author:
+  - name: "Sammi Rosser - Presenter"
+  - name: "Amy Heather - Session content creator"
+format:
+  revealjs:
+    theme: dark
+    code-annotations: hover
+    css: styles.css
+    logo: images/hsma_logo.png
+    center: false
+    auto-stretch: false
+    width: 1280
+    height: 720
+filters:
+  - whitphx/stlite
+---
+
+## You've built a DES model!
+
+![](gif/beautiful.gif){height=400px}
+
+Now it's time to share results of the model.
+
+## Let's share the model
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+![](gif/go-wrong.gif)
+
+:::
+
+::: {.column width="50%"}
+
+
+You could send everyone your Python code.<br/>
+But they might not...
+
+* Know Python.
+* Have it installed.
+* Have the right environment or packages.
+* Know which bits to run or which numbers to change.
+* Have time to figure all that out.
+
+:::
+
+::::
+
+## Actually, let's send a report
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+Run a few scenarios.
+
+Make some lovely charts.
+
+Send everyone a report.
+
+Job done. Surely.
+
+:::
+
+::: {.column width="50%"}
+
+![](gif/mission-accomplished.gif)
+
+:::
+
+::::
+
+## You get a few questions back...
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+"Can you rerun it with another three beds?"
+
+"What if we have fewer staff on Tuesdays?"
+
+"Can we change the arrival rate?"
+
+"Can you try all three of those things together?"
+
+<br>
+
+Somewhere, a file called `final_report_v7_ACTUAL_FINAL.pdf` is being created.
+
+<br>
+
+But what if they could try it themselves?
+
+:::
+
+::: {.column width="50%"}
+
+![](gif/busy.gif)
+
+:::
+
+::::
+
+##
+
+![](gif/you-get-a-website.gif){height=500px}
+
+## Enter Streamlit
+
+Streamlit lets us build a data-focused web application in Python.
+
+We can give our DES model an interface so people can:
+
+* Choose model inputs
+* Run scenarios
+* Explore charts and results
+
+![](images/streamlit_logo.png)
+
+## DES app showcase: acute medical unit {.showcase}
+
+<https://amumodelling-hsma.streamlit.app/>
+
+![](images/example_amu.png){height=570px}
+
+## DES app showcase: acute medical unit {.showcase}
+
+<https://amumodelling-hsma.streamlit.app/>
+
+![](images/example_amu_charts.png){height=570px}
+
+## DES app showcase: elective surgery{.showcase visibility="hidden"}
+
+TODO: Not currently working
+
+<https://gstt-hands-waitlist.streamlit.app/>
+
+## DES app showcase: stroke ward {.showcase}
+
+<https://stroke-model-des.streamlit.app/>
+
+![](images/example_stroke.png){height=570px}
+
+## DES app showcase: stroke ward {.showcase}
+
+<https://stroke-model-des.streamlit.app/>
+
+![](images/example_stroke_metrics.png){height=570px}
+
+## DES app showcase: stroke ward {.showcase}
+
+<https://stroke-model-des.streamlit.app/>
+
+![](images/example_stroke_charts.png){height=570px}
+
+## DES app showcase: non-elective flow {.showcase}
+
+<https://non-elective-flow-simulation-model-club.streamlit.app/>
+
+![](images/example_nonel.png){height=570px}
+
+## DES app showcase: non-elective flow {.showcase}
+
+<https://non-elective-flow-simulation-model-club.streamlit.app/>
+
+![](images/example_nonel_compare.png){height=570px}
+
+## DES app showcase: urgent treatment centre {.showcase}
+
+<https://stars-simpy-example.streamlit.app/>
+
+![](images/example_urgent.png){height=570px}
+
+## DES app showcase: urgent treatment centre {.showcase}
+
+<https://stars-simpy-example.streamlit.app/>
+
+![](images/example_urgent_plot.png){height=570px}
+
+## DES app showcase: DES playground {.showcase}
+
+<https://playground.hsma.co.uk/>
+
+![](images/example_playground.png){height=570px}
+
+## DES app showcase: vidigi examples {.showcase visibility="hidden"}
+
+TODO
+
+<https://simpy-visualisation.streamlit.app/>
+
+## TODO: SECTION SLIDE
+
+Introduction to streamlit
+
+## Introduction to streamlit
+
+Streamlit is a python package.
+
+You make a python script (e.g., `app.py`).
+
+`import streamlit as st` at the top.
+
+To run it you do from terminal:
+
+`streamlit run app.py`
+
+## Text
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+```{.python}
+import streamlit as st
+
+st.title("Title")
+
+st.header("Header")
+
+st.subheader("Subheader")
+
+st.markdown("Text")
+
+st.text("Text")
+
+st.write("Text")
+
+st.badge("Badge")
+
+st.caption("Caption")
+
+st.code("Code")
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{stlite-python}
+import streamlit as st
+
+st.title("Title")
+
+st.header("Header")
+
+st.subheader("Subheader")
+
+st.markdown("Text")
+
+st.text("Text")
+
+st.write("Text")
+
+st.badge("Badge")
+
+st.caption("Caption")
+
+st.code("Code")
+```
+
+:::
+
+::::
+
+## Numeric inputs
+
+TODO: explain `label`, `min_value`, `max_value`, `value`, `step`.
+
+Maybe by demonstraitng what happens if change it? or maybe that's overkill.
+
+Use a slider to drag a value or a number input to enter one
+
+```{.python}
+import streamlit as st
+
+st.slider(
+    label="Pick a number", 
+    min_value=0,
+    max_value=10,
+    value=2,
+    step=1
+)
+
+st.number_input(
+    label="Pick a number",
+    min_value=0,
+    max_value=10,
+    value=2,
+    step=1
+)
+```
+
+```{stlite-python}
+import streamlit as st
+
+st.slider(
+    label="Pick a number", 
+    min_value=0,
+    max_value=10,
+    value=2,
+    step=1
+)
+
+st.number_input(
+    label="Pick a number",
+    min_value=0,
+    max_value=10,
+    value=2,
+    step=1
+)
+```
+
+## Accessing the chosen value
+
+There are two ways... assign to variable, or add to session_state
+
+Assign to variable first:
+
+```{stlite-python}
+import streamlit as st
+
+chosen_value = st.slider(
+    label="Pick a number", 
+    min_value=0,
+    max_value=10,
+    value=2,
+    step=1
+)
+
+st.write(chosen_value)
+```
+
+## Accessing the chosen value
+
+There are two ways... assign to variable, or add to session_state
+
+other option, session_state. to do this, we give a key.
+
+can then access from session state
+
+```{stlite-python}
+import streamlit as st
+
+st.slider(
+    label="Pick a number", 
+    min_value=0,
+    max_value=10,
+    value=2,
+    step=1,
+    key="chosen_value"
+)
+
+st.write(st.session_state["chosen_value"])
+```
+
+## Sesssion state
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+The session state is like a dictionary of values for the current user's session. It keeps track of values. For our slider:
+
+1. The user chooses a new inter-arrival time.
+2. Streamlit updates the widget's value in session state.
+3. The script reruns, so we can read and use the updated value.
+
+:::
+
+::: {.column width="50%"}
+
+![](gif/session_state_.gif)
+
+:::
+
+::::
+
+## TODO: SECTION SLIDE
+
+Let's build a streamlit app for our DES model
+
+## Let's build a streamlit app!
+
+We'll use the DES model from session 2C. As a reminder:
+
+* It has `Param`, `Patient`, `Model`, and `Trial` classes.
+* It simulates a simple nurse clinic.
+
+![](images/model_diagram.drawio.png)
+
+## Before we build the app...
+
+Remove the `print()` statements from the end of the file.
+
+```{.python code-overflow="scroll"}
+# REMOVE ALL OF THIS...
+
+base_case_params = Param()
+base_case_trial = Trial(base_case_params)
+base_case_trial.run_trial()
+base_case_trial.calculate_trial_results()
+print ("BASE CASE TRIAL RESULTS")
+print ("-----------------------")
+print ("Queuing Time for the Nurse")
+print (f"Mean : {base_case_trial.trial_mean_q_time_nurse:.2f} minutes")
+print (f"SD : {base_case_trial.trial_sd_q_time_nurse:.2f} minutes")
+print (f"90th Perc : {base_case_trial.trial_perc_90_q_time_nurse:.2f} minutes")
+print (f"Standard Error : {base_case_trial.se_q_time_nurse:.2f}")
+print (
+    f"95% CI : ({base_case_trial.ci_lower_q_time_nurse:.2f}, ",
+    f"{base_case_trial.ci_upper_q_time_nurse:.2f}) minutes"
+)
+print ()
+
+what_if_params = Param(num_nurses=2)
+what_if_trial = Trial(what_if_params)
+what_if_trial.run_trial()
+what_if_trial.calculate_trial_results()
+print ("2 NURSES TRIAL RESULTS")
+print ("----------------------")
+print ("Queuing Time for the Nurse")
+print (f"Mean : {what_if_trial.trial_mean_q_time_nurse:.2f} minutes")
+print (f"SD : {what_if_trial.trial_sd_q_time_nurse:.2f} minutes")
+print (f"90th Perc : {what_if_trial.trial_perc_90_q_time_nurse:.2f} minutes")
+print (f"Standard Error : {what_if_trial.se_q_time_nurse:.2f}")
+print (
+    f"95% CI : ({what_if_trial.ci_lower_q_time_nurse:.2f}, ",
+    f"{what_if_trial.ci_upper_q_time_nurse:.2f}) minutes"
+)
+print ()
+```
+
+## Before we build the app...
+
+Add a calculation for the cost of nurse time.
+
+```{.python code-line-numbers="10,18"}
+class Param:
+    def __init__(
+        self,
+        mean_patient_inter=5,
+        mean_nurse_consult_time=6,
+        sd_nurse_consult_time=1,
+        num_nurses=1,
+        sim_duration=120,
+        num_replications=5,
+        nurse_cost_per_hour=30,
+    ):
+        self.mean_patient_inter = mean_patient_inter
+        self.mean_nurse_consult_time = mean_nurse_consult_time
+        self.sd_nurse_consult_time = sd_nurse_consult_time
+        self.num_nurses = num_nurses
+        self.sim_duration = sim_duration
+        self.num_replications = num_replications
+        self.nurse_cost_per_hour = nurse_cost_per_hour
+```
+
+## Before we build the app...
+
+Add a calculation for the cost of nurse time.
+
+```{.python code-line-numbers="9-14"}
+        self.ci_lower_q_time_nurse = self.trial_mean_q_time_nurse - (
+            t * self.se_q_time_nurse
+        )
+
+        self.ci_upper_q_time_nurse = self.trial_mean_q_time_nurse + (
+            t * self.se_q_time_nurse
+        )
+
+        self.total_nurse_cost = (
+            self.param.num_nurses
+            * self.param.sim_duration
+            / 60
+            * self.param.nurse_cost_per_hour
+        )
+```
+
+## Our updated model
+
+```{.python code-overflow="scroll"}
+{{< include ../app/model.py >}}
+```
+
+## Streamlit app
+
+We'll start with a simple app. this is our steps...
+
+1. Create the app script
+2. Get inputs from the user.
+3. Run the model using those inputs.
+4. Show the results.
+
+## 1. Create the app script
+
+Create a file called `app.py` in the same folder as `model.py`.
+
+Add these imports:
+
+```{.python}
+import plotly.express as px
+import streamlit as st
+
+from model import Param, Trial
+```
+
+We'll use:
+
+* `streamlit` to build the interface.
+* `Param` and `Trial` to configure and run our model.
+* `plotly.express` to create charts of the results.
+
+<!-- TODO: explain relative imports? -->
+
+## TODO: SECTION SLIDE
+
+2. Get inputs from the user
+
+## What can users change?
+
+should all be in `Param`
+show `Param`
+
+* Mean time between arrivals
+* Mean and SD for consultation length
+* Number of nurses
+* Hourly nurse cost
+* Length of simulation
+* Number of replications
+
+
+We have the following things we need to get...
+
+* inter-arrival time
+* etc.
+
+## Inputs: inter-arrival time
+
+As a reminder:
+
+```{.python}
+class Param:
+    def __init__(
+        self,
+        mean_patient_inter=5,
+```
+
+So we set default 5. We choose min max step. Set key so can feed to Param later.
+
+```{.python}
+st.slider(
+    label="Mean patient inter-arrival time (minutes)", # <1>
+    min_value=3.0, # <2>
+    max_value=7.0, # <3>
+    value=5.0, # <4>
+    step=0.25, # <5>
+    key="mean_patient_inter", # <6>
+)
+```
+
+App:
+
+```{stlite-python}
+import streamlit as st
+
+st.slider(
+    label="Mean patient inter-arrival time (minutes)",
+    min_value=3.0,
+    max_value=7.0,
+    value=5.0,
+    step=0.25,
+    key="mean_patient_inter",
+)
+```
+
+## Inputs
+
+Do same for the others
+
+## TODO: SECTION SLIDE
+
+3. Run model using the inputs
+
+## Pass the inputs to `Param`
+
+Use the selected values instead of relying on the model's defaults.
+
+```{.python}
+```
+
+## When should the model run?
+
+Changing an input normally reruns the Streamlit script.
+
+But we do not want to rerun the **simulation** every time someone adjusts a slider.
+
+Let users choose their inputs, then click **Run simulation**.
+
+## Add a run button
+
+When click button, returns true on rerun
+so will rerun through script
+this time true 
+so will do the indented stuff
+
+## 4. displaying results
+
+Previously we wrote the results to the terminal:
+
+```
+copy
+```
+
+We can display similar message in our app
+
+this is inside the button too
+
+## print summary stats
+
+```
+st.write(f"""
+    Summary of nurse queue times across **all** replications.
+
+    * Mean: {results["mean"]:.2f} minutes.
+    * SD: {results["sd"]:.2f} minutes.
+    * 90th Perc: {results["p90"]:.2f} minutes.
+    * Standard error: {results["se"]:.2f}
+    * 95% CI: ({results["ci_lower"]:.2f}, {results["ci_upper"]:.2f}) minutes
+    
+    Total nurse staffing cost: £{results["cost"]:,.2f}
+    """)
+```
+
+## charts
+
+can also make charts
+
+if using plotly, you make like normal then use st.plotly_chart()
+
+    fig = px.histogram(
+        data_frame=results["df"],
+        x="mean_q_time_nurse",
+        labels={"mean_q_time_nurse": "Mean nurse queue time"},
+    )
+    fig.update_layout(yaxis_title="Number of replications")
+    st.plotly_chart(fig)
+
+## dataframes
+
+can also show dataframes. interactive with st.dataframe() or static with st.table()
+
+        st.dataframe(
+            results["df"][
+                [
+                    "replication_id",
+                    "patient_counter",
+                    "mean_q_time_nurse",
+                    "sd_q_time_nurse",
+                    "perc_90_q_time_nurse",
+                ]
+            ]
+        )
+
+## Bringing it all together
+
+Show full app
+
+## Bringing it all together
+
+add some titles and headers
+
+## st.container
+
+group the inputs
+
+st.container
+
+visible border
+
+Indent everything that belongs **inside** the container.
+
+## st.expander
+
+hide optional detail
+
+actually, maybe hide that dataframe lets use st.expander().
+
+## st.space
+
+use st.space() to help space it out better
+
+can customise size="..."
+
+## Exercise
+
+Now it's your turn. 
+
+Provided two scripts.
+
+model.py
+
+analysis.py
+
+turn into an app.
+
+you shouldn't need to make any changes to model.py!
+
+you will want to use the code from analysis.py in the app.
+
+work through fisrt
+
+getting the inputs
+
+then running the model
+
+then showing analysis
+
+## SECTION 2 MULTIPAGE APP
+
+that was simple single page app
+
+now were going to make a multipage app
+
+going to have a home page, when first open app, introduce model, authors, etc.
+
+## exercise
+
+add a homepage to the app you just made
+
+## DAY ONE : SECTION 3 HOSTING ON COMMUNITY CLOUD
+
+streamlit community cloud
+
+## exercise
+
+deploy your app on community cloud
+
+## DAY TWO MORNING : SECTION 4 SCENARIOS
+
+now going to show how to make an app that can compare scenarios
+
+need to be able to save results of a run
+
+and then compare between them
+
+to do this, we're going to split the simulation page into two
+
+one that runs scenarios
+
+one that can look at results of a scenario or compare them
+
+## split
+
+show splitting the two
+
+## run and save scenarios
+
+save how? session state
+
+can do a success message, it saved yay
+
+## show scenarios
+
+help user keep track
+show scenarios table
+
+## results
+
+results
+
+single scenario or compare
+
+st.tabs
+
+## single scenario results
+
+its same results code as before
+just need to choose from scenarios
+let user choose
+can use a dropdown
+
+## single scenario results
+
+can remind of scenarios again with dataframe
+can use pd.styler to highlight which they chose
+
+## compare scenarios
+
+need to run at least two
+do message for that
+
+## choose which to compare
+
+choose which scenarios to compare
+can use multiselect
+
+## show chosen
+
+can do the table again with pd.styler
+
+## comparison figure
+
+good for comparison is often boxplot
+here also showing individual rep on boxplot
+
+## comparison table
+
+could also compare those summary stats in a table
+and the staffing costs
+
+## exercise
+
+change app from yesterday from singlepage to multipage
+with scenario comparison
+
+## DAY TWO MORNING/AFTERNOON : SECTION 5 HOSTING WITH ST LITE
+
+st lite
+
+## exercise
+
+host your app with stlite
+
+## DAY TWO AFTERNOON : SECTION 6 CUSTOMISING APP APPEARANCE
+
+theme
+
+css
+
+logo
+
+etc.
+
+## exercise
+
+customise appearance of your app

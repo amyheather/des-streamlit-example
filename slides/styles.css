@@ -1,0 +1,111 @@
+/* ---------------------------------------------------------------------- */
+/* Whole presentation
+/* ---------------------------------------------------------------------- */
+
+
+/* Base font size and image behind the entire presentation */
+.reveal {
+  font-size: 30px;
+  background: url("images/banner_hq.png") center / cover no-repeat;
+}
+
+/* Grey panel covering the full slide*/
+.reveal .slides > section {
+  background: rgba(56, 56, 56, 0.8);
+  /* Round the corners */
+  border-radius: 12px;
+  /* Include padding within the specified width and height */
+  box-sizing: border-box;
+  padding: 32px;
+  /* Fill the slide's available height and width */
+  height: 100%;
+  width: 100%;
+}
+
+/* Centre ordinary slide content in the space BELOW the heading */
+.reveal .slides > section.present:not(#title-slide) {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Only reserve title space when the heading is not empty */
+.reveal .slides > section.present:not(#title-slide):has(> h2:not(:empty)) {
+  padding-top: 140px;
+}
+
+/* Hide empty headings */
+.reveal .slides > section:not(#title-slide) > h2:empty {
+  display: none;
+}
+
+/* Keep headings in a consistent position */
+.reveal .slides > section:not(#title-slide) > h2 {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  margin: 0;
+  text-align: left;
+}
+
+/* Preserve proportions for images with an explicit height */
+.reveal .slides img[height] {
+  width: auto !important;
+  object-fit: contain;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Title slide
+/* ---------------------------------------------------------------------- */
+
+/* Set title font size */
+#title-slide .title,
+#title-slide .subtitle {
+  font-size: 1.2em;
+}
+
+/* Centre the author names */
+#title-slide .quarto-title-authors {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5em;
+}
+
+/* Smaller author names in HSMA green */
+#title-slide .quarto-title-author-name {
+  color: #7ac943;
+}
+
+/* Centre title slide */
+.reveal .slides > section#title-slide.present {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* Showcase slide
+/* ---------------------------------------------------------------------- */
+
+/* Tighten spacing on showcase slides */
+.reveal .slides section.showcase > p {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.reveal .slides section.showcase img {
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove any additional figure-wrapper spacing */
+.reveal .slides section.showcase .quarto-figure,
+.reveal .slides section.showcase figure,
+.reveal .slides section.showcase figure > p {
+  margin: 0;
+}
